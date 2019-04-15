@@ -33,6 +33,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbtnReload = new System.Windows.Forms.ToolStripButton();
             this.tsbtnImport = new System.Windows.Forms.ToolStripButton();
+            this.tsbtnExport = new System.Windows.Forms.ToolStripButton();
             this.marsApplicationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -48,7 +49,7 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.Size = new System.Drawing.Size(800, 415);
             this.dataGridView.TabIndex = 0;
-            this.dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellEndEdit);
+            this.dataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView_CellEndEdit);
             // 
             // toolStrip1
             // 
@@ -56,7 +57,8 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbtnReload,
-            this.tsbtnImport});
+            this.tsbtnImport,
+            this.tsbtnExport});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -72,7 +74,7 @@
             this.tsbtnReload.Name = "tsbtnReload";
             this.tsbtnReload.Size = new System.Drawing.Size(133, 32);
             this.tsbtnReload.Text = "Обновить данные";
-            this.tsbtnReload.Click += new System.EventHandler(this.tsbtnReload_Click);
+            this.tsbtnReload.Click += new System.EventHandler(this.TsbtnReload_Click);
             // 
             // tsbtnImport
             // 
@@ -81,7 +83,16 @@
             this.tsbtnImport.Name = "tsbtnImport";
             this.tsbtnImport.Size = new System.Drawing.Size(123, 32);
             this.tsbtnImport.Text = "Импортировать";
-            this.tsbtnImport.Click += new System.EventHandler(this.tsbtnImport_Click);
+            this.tsbtnImport.Click += new System.EventHandler(this.TsbtnImport_Click);
+            // 
+            // tsbtnExport
+            // 
+            this.tsbtnExport.Image = global::NLTestApp.Properties.Resources.upload_24;
+            this.tsbtnExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbtnExport.Name = "tsbtnExport";
+            this.tsbtnExport.Size = new System.Drawing.Size(124, 32);
+            this.tsbtnExport.Text = "Экспортировать";
+            this.tsbtnExport.Click += new System.EventHandler(this.TsbtnExport_Click);
             // 
             // marsApplicationBindingSource
             // 
@@ -113,6 +124,7 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbtnReload;
         private System.Windows.Forms.ToolStripButton tsbtnImport;
+        private System.Windows.Forms.ToolStripButton tsbtnExport;
     }
 }
 

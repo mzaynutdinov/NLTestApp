@@ -65,7 +65,7 @@ namespace NLTestApp.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap import_24 {
             get {
-                object obj = ResourceManager.GetObject("import-24", resourceCulture);
+                object obj = ResourceManager.GetObject("import_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -75,7 +75,17 @@ namespace NLTestApp.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap refresh_24 {
             get {
-                object obj = ResourceManager.GetObject("refresh-24", resourceCulture);
+                object obj = ResourceManager.GetObject("refresh_24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap upload_24 {
+            get {
+                object obj = ResourceManager.GetObject("upload_24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

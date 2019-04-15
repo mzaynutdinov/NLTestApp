@@ -23,17 +23,18 @@ namespace NLTestApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            readDataFromDatabase();
+            ReadDataFromDatabaseAndReloadList();
         }
 
-        private void tsbtnReload_Click(object sender, EventArgs e)
+        private void TsbtnReload_Click(object sender, EventArgs e)
         {
-            readDataFromDatabase();
+            ReadDataFromDatabaseAndReloadList();
         }
 
-        private void tsbtnImport_Click(object sender, EventArgs e)
+        private void TsbtnImport_Click(object sender, EventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Tab-Separated Values (*.tsv)|*.tsv";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
@@ -56,7 +57,7 @@ namespace NLTestApp
                     try
                     {
                         db.Add(importedApplicants);
-                        readDataFromDatabase();
+                        ReadDataFromDatabaseAndReloadList();
                     }
                     catch (Exception ex)
                     {
@@ -78,7 +79,13 @@ namespace NLTestApp
             }
         }
 
-        private void readDataFromDatabase()
+        private void ReadDataFromDatabaseAndReloadList()
+        {
+            List<MarsApplicant> applications = ReadDataFromDatabase();
+            RefreshDataListView(applications);
+        }
+
+        private List<MarsApplicant> ReadDataFromDatabase()
         {
             List<MarsApplicant> applications = null;
             try
@@ -88,7 +95,7 @@ namespace NLTestApp
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"При получении данных из БД произошла ошибка!\n\n${ex.Message}",
+                    $"При получении данных из БД произошла ошибка!\n\n{ex.Message}",
                     "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error
                 );
@@ -96,10 +103,10 @@ namespace NLTestApp
                 Console.WriteLine(ex.StackTrace);
             }
 
-            refreshDataListView(applications);
+            return applications;
         }
 
-        private void refreshDataListView(List<MarsApplicant> data)
+        private void RefreshDataListView(List<MarsApplicant> data)
         {
             dataGridView.DataSource = data ?? new List<MarsApplicant>(0);
             dataGridView.Columns[0].Visible = false;
@@ -122,7 +129,7 @@ namespace NLTestApp
             }
         }
 
-        private void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var row = dataGridView.Rows[e.RowIndex];
             int id = int.Parse(row.Cells[0].Value.ToString());
@@ -140,8 +147,30 @@ namespace NLTestApp
                 );
 
                 var selAddr = dataGridView.CurrentCellAddress;
-                readDataFromDatabase();
+                ReadDataFromDatabaseAndReloadList();
                 dataGridView.CurrentCell = dataGridView.Rows[selAddr.Y].Cells[selAddr.X];
+            }
+        }
+
+        private void TsbtnExport_Click(object sender, EventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Tab-Separated Values (*.tsv)|*.tsv";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var lines = ReadDataFromDatabase().ConvertAll(item => $"{item.name}\t{item.birthday}\t{item.email}\t{item.phone}");
+                    File.WriteAllLines(saveFileDialog.FileName, lines);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Ошибка при экпорте данных из БД!\n\n{ex.Message}",
+                        "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error
+                    );
+                }
             }
         }
     }

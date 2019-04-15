@@ -75,19 +75,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>DatabaseProps.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\import-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\upload-24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

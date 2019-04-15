@@ -34,6 +34,15 @@ namespace NLTestApp {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1433")]
+        public uint db_host_port {
+            get {
+                return ((uint)(this["db_host_port"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("TestDB")]
         public string db_name {
             get {
@@ -56,15 +65,6 @@ namespace NLTestApp {
         public string db_password {
             get {
                 return ((string)(this["db_password"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1433")]
-        public uint db_host_port {
-            get {
-                return ((uint)(this["db_host_port"]));
             }
         }
     }
