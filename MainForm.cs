@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -28,6 +29,8 @@ namespace NLTestApp
 
         private void TsbtnReload_Click(object sender, EventArgs e)
         {
+            dataGridView.Enabled = false;
+            toolbar.Enabled = false;
             ReadDataFromDatabaseAndReloadList();
         }
 
@@ -56,8 +59,29 @@ namespace NLTestApp
 
                     try
                     {
-                        db.Add(importedApplicants);
-                        ReadDataFromDatabaseAndReloadList();
+                        var form = this;
+
+                        toolbar.Enabled = false;
+                        dataGridView.Enabled = false;
+                        imgUploadingAnim.Visible = true;
+                        db.AddNonblocking(importedApplicants, delegate (Exception ex)
+                        {
+                            if (ex != null)
+                            {
+                                MessageBox.Show(
+                                    $"Ошибка при добавлении данных в БД!\n\n{ex}",
+                                    "Ошибка",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                                );
+                            }
+
+                            form.Invoke((MethodInvoker)delegate
+                               {
+                                   form.ReadDataFromDatabaseAndReloadList();
+                                   form.imgUploadingAnim.Visible = false;
+                               }
+                            );
+                        });
                     }
                     catch (Exception ex)
                     {
@@ -68,10 +92,10 @@ namespace NLTestApp
                         );
                     }
                 }
-                catch (Exception ex)
+                catch (IOException ex)
                 {
                     MessageBox.Show(
-                        $"Ошибка при чтении файла 'D:\\mars.tsv'!\n\n{ex.Message}",
+                        $"Ошибка при чтении файла '{openFileDialog.FileName}'!\n\n{ex.Message}",
                         "Ошибка",
                         MessageBoxButtons.OK, MessageBoxIcon.Error
                     );
@@ -83,6 +107,8 @@ namespace NLTestApp
         {
             List<MarsApplicant> applications = ReadDataFromDatabase();
             RefreshDataListView(applications);
+            dataGridView.Enabled = true;
+            toolbar.Enabled = true;
         }
 
         private List<MarsApplicant> ReadDataFromDatabase()
@@ -162,6 +188,12 @@ namespace NLTestApp
                 {
                     var lines = ReadDataFromDatabase().ConvertAll(item => $"{item.name}\t{item.birthday}\t{item.email}\t{item.phone}");
                     File.WriteAllLines(saveFileDialog.FileName, lines);
+
+                    MessageBox.Show(
+                        $"Данные были успешно экспортированы в файл '{saveFileDialog.FileName}'!",
+                        "Экспорт",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information
+                    );
                 }
                 catch (Exception ex)
                 {
@@ -171,6 +203,28 @@ namespace NLTestApp
                         MessageBoxButtons.OK, MessageBoxIcon.Error
                     );
                 }
+            }
+        }
+
+        private void DataGridView_EnabledChanged(object sender, EventArgs e)
+        {
+            DataGridView dgv = sender as DataGridView;
+            if (!dgv.Enabled)
+            {
+                dgv.DefaultCellStyle.BackColor = SystemColors.Control;
+                dgv.DefaultCellStyle.ForeColor = SystemColors.GrayText;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control;
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = SystemColors.GrayText;
+                dgv.CurrentCell = null;
+                dgv.ReadOnly = true;
+            }
+            else
+            {
+                dgv.DefaultCellStyle.BackColor = SystemColors.Window;
+                dgv.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Window;
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = SystemColors.ControlText;
+                dgv.ReadOnly = false;
             }
         }
     }

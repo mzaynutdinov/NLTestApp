@@ -93,5 +93,8 @@
   <ItemGroup>
     <None Include="Resources\upload-24.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\import-24-anim.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
